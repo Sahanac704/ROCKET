@@ -1,0 +1,57 @@
+  {% extends 'npjAirport/base.html' %}
+
+  {% block title%}
+    <title>index</title>
+  {% endblock %}
+
+  {% block css %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  {% endblock %}
+
+
+
+  {% block content%}
+  <div class="container mt-5">
+    <h2>CSIT 2077 : Django Developer</h2>
+
+    <table class="table table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">S.N.</th>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Email</th>
+          <th scope="col">Actions</th>
+
+        </tr>
+      </thead>
+      <tbody>
+      {% for dx in data %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{dx.name}}</td>
+          <td>{{dx.address}}</td>
+          <td>{{dx.mobile}}</td>
+          <td>{{dx.email}}</td>
+          <td>
+            <a href="{% url 'edit' dx.id %}" class="btn btn-info btn-sm">Edit</a>
+              <button class="btn btn-sm btn-primary">Delete</button>
+
+          </td>
+
+
+        </tr>
+
+    {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+  {% endblock %}
+
+
+  {% block js%}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  {% endblock %}
