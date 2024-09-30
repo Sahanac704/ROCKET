@@ -1,7 +1,8 @@
 from lib2to3.fixes.fix_input import context
-from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import CSIT
+from .import global_message
 
 # Create your views here.
 
@@ -21,8 +22,9 @@ def form(request):
         mobile = det.get('mobile')
         email = det.get('email')
         CSIT.objects.create(name = name, address = address, mobile = mobile, email = email)
-        messages.success(request, "Data Save Successfully...!")
+        messages.success(request, global_message.SUCCESS_MESSAGE)
         return redirect('/')
+
     return render(request, template_name = "npjAirport/form.html")
 
 
@@ -42,13 +44,16 @@ def edit(request, pk):
         dm.mobile = mobile
         dm.email = email
         dm.save()
-        return redirect('/')
-    dt = CSIT.objects.get(id = pk)
+        messages.success(request, global_message.DELETE_MESSAGE)
+        return redirect('/form')
 
+    dt = CSIT.objects.get(id=pk)
     return render(request, template_name="npjAirport/edit.html", context = {'dt':dt})
+
 
 def delete(request, pk):
     CSIT.objects.get(id = pk).delete()
+    messages.success(request, global_message.DELETE_MESSAGE)
     return redirect('/')
 
 
