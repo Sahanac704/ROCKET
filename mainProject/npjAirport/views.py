@@ -7,11 +7,11 @@ from .import global_message
 # Create your views here.
 
 def index(request):
-    data = CSIT.objects.all()
+    data = CSIT.objects.all()     #get all data from the database
     return render(request, template_name = "npjAirport/index.html", context = {'data' : data})
 
 def table(request):
-    data = CSIT.objects.all()
+    data = CSIT.objects.filter(is_delete = False)
     return render(request, template_name= "npjAirport/table.html", context= {'data' : data})
 
 def form(request):
@@ -21,7 +21,7 @@ def form(request):
         address = det.get('address')
         mobile = det.get('mobile')
         email = det.get('email')
-        CSIT.objects.create(name = name, address = address, mobile = mobile, email = email)
+        CSIT.objects.create(name = name, address = address, mobile = mobile, email = email)  #create method (ORM)
         messages.success(request, global_message.SUCCESS_MESSAGE)
         return redirect('/')
 
@@ -37,7 +37,7 @@ def edit(request, pk):
         mobile = det.get('mobile')
         email = det.get('email')
 
-        dm = CSIT.objects.get(id = pk)
+        dm = CSIT.objects.get(id = pk, is_delete = False)   #filter data as per given condition
 
         dm.name = name
         dm.address = address
@@ -52,7 +52,9 @@ def edit(request, pk):
 
 
 def delete(request, pk):
-    CSIT.objects.get(id = pk).delete()
+    dx = CSIT.objects.get(id = pk, is_delete = False)
+    dx.is_delete = True
+    dx.save()
     messages.success(request, global_message.DELETE_MESSAGE)
     return redirect('/')
 
